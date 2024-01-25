@@ -1,3 +1,8 @@
 export default function ChatHome() {
-  return <h1>This is a main Chat page</h1>;
+  return (
+    <div className="full-screen two-column">
+      <div className="side-bar">side Bar</div>
+      <div className="main-chat-area">Main Chat</div>
+    </div>
+  );
 }
