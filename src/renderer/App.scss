@@ -1,0 +1,9 @@
+@import 'styles/reset.scss';
+@import 'styles/variables.scss';
+@import 'styles/elements.scss';
+
+body {
+  background: var(--colors-background-light-primary);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--colors-text-light-primary);
+}

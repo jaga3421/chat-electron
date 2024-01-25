@@ -1,0 +1,46 @@
+.flex {
+  display: flex;
+  &.flex-col {
+    flex-direction: column;
+  }
+  &.flex-row {
+    flex-direction: row;
+  }
+  &.center-this {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.full-screen {
+  height: 100vh;
+  width: 100vw;
+}
+
+.two-column {
+  display: flex;
+  flex-direction: row;
+  .side-bar {
+    width: 360px;
+    height: 100vh;
+    background-color: var(--colors-background-light-secondary);
+  }
+}
+
+.text-dark {
+  color: var(--colors-text-light-primary);
+}
+
+// Marings and padding
+.mt-24 {
+  margin-top: 24px;
+}
+
+// direct elements
+h3 {
+  font-size: 18px;
+}
+
+button {
+  font-size: 15px;
+}
