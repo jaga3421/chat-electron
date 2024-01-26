@@ -1,8 +1,11 @@
+import ChatMainWindow from '../components/chat/ChatMainWindow';
+import ChatSideBar from '../components/chat/ChatSideBar';
+
 export default function ChatHome() {
   return (
     <div className="full-screen two-column">
-      <div className="side-bar">side Bar</div>
-      <div className="main-chat-area">Main Chat</div>
+      <ChatSideBar />
+      <ChatMainWindow />
     </div>
   );
 }
