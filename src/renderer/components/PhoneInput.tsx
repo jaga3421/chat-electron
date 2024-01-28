@@ -7,14 +7,20 @@
 
  */
 
-import React, { ChangeEvent, useState, ClipboardEvent } from 'react';
+import React, {
+  ChangeEvent,
+  useState,
+  ClipboardEvent,
+  KeyboardEvent,
+} from 'react';
 import styled from 'styled-components';
 import { AsYouType } from 'libphonenumber-js';
 
 type InputProps = {
   prefix: string;
   placeholder: string;
-  onChange: (value: string) => void;
+  uponChange: (value: string) => void;
+  onSubmit: () => void; // added onSubmit prop
   className?: string;
   w?: string;
   autoFocus?: boolean;
@@ -52,7 +58,8 @@ const StyledInput = styled.input`
 const PhoneInput: React.FC<InputProps> = ({
   prefix,
   placeholder,
-  onChange,
+  uponChange,
+  onSubmit, // added onSubmit prop
   className,
   w,
   autoFocus,
@@ -63,7 +70,7 @@ const PhoneInput: React.FC<InputProps> = ({
     const newValue = event.target.value.replace(/\D/g, '');
     const formattedValue = new AsYouType('US').input(newValue);
     setValue(formattedValue);
-    onChange(formattedValue);
+    uponChange(formattedValue);
   };
 
   const handlePaste = (event: ClipboardEvent) => {
@@ -73,7 +80,13 @@ const PhoneInput: React.FC<InputProps> = ({
     if (paste !== pasteNumeric) {
       event.preventDefault();
       setValue(formattedPaste);
-      onChange(formattedPaste);
+      uponChange(formattedPaste);
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      onSubmit();
     }
   };
 
@@ -83,13 +96,15 @@ const PhoneInput: React.FC<InputProps> = ({
       w={w}
       prefix={prefix}
       placeholder={placeholder}
-      onChange={onChange}
+      uponChange={uponChange}
+      onSubmit={onSubmit} // Add the onSubmit prop
     >
       <Prefix>{prefix}</Prefix>
       <StyledInput
         value={value}
         onChange={handleChange}
         onPaste={handlePaste}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         autoFocus={autoFocus}
       />

@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 type ButtonProps = {
   type?: 'primary' | 'secondary';
@@ -11,6 +12,19 @@ type ButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
 };
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingIcon = styled(AiOutlineLoading3Quarters)`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -8px;
+  animation: ${spin} 2s linear infinite;
+`;
 
 const StyledButton = styled.button<ButtonProps>`
   position: relative;
@@ -44,12 +58,10 @@ const StyledButton = styled.button<ButtonProps>`
   ${(props) =>
     props.loading &&
     css`
-      &::after {
-        content: 'L';
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
+      pointer-events: none;
+
+      &:after {
+        content: '';
       }
     `}
 `;
@@ -74,6 +86,7 @@ const Button: React.FC<ButtonProps> = ({
       w={w}
     >
       {children}
+      {loading && <LoadingIcon />}
     </StyledButton>
   );
 };

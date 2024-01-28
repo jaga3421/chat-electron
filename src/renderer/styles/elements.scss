@@ -63,3 +63,16 @@ h3 {
 button {
   font-size: 15px;
 }
+
+.relative {
+  position: relative;
+}
+
+.err-message {
+  color: var(--colors-text-light-error);
+  font-size: 10px;
+  text-align: center;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+}
