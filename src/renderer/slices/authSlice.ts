@@ -5,6 +5,7 @@ import { signIn } from '../api/auth';
 interface AuthState {
   token: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  user: object;
   error: string | null;
   authResponse: any;
 }
@@ -13,6 +14,7 @@ const initialState: AuthState = {
   token: null,
   status: 'idle',
   error: null,
+  user: {},
   authResponse: null,
 };
 
@@ -56,9 +58,11 @@ export const authSlice = createSlice({
       })
       .addCase(signInAsync.fulfilled, (state, action: PayloadAction<any>) => {
         state.status = 'succeeded';
-        state.authResponse = action.payload.data;
-        state.token = action.payload.data.token;
 
+        // setting token information
+        state.token = action.payload.data.token;
+        state.authResponse = action.payload.data;
+        state.user = action.payload.data.account;
         if (action.payload.data.token) {
           localStorage.setItem('authToken', action.payload.data.token);
         }
