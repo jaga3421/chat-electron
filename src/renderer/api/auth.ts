@@ -1,6 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
 
+const LOGIN_API = process.env.REACT_APP_LOGIN_URL;
+
+if (!LOGIN_API) {
+  throw new Error('The LOGIN_API environment variable is not defined!');
+}
+
 export const signIn = async (
   phoneNumber: string,
   countryCode: string,
@@ -8,7 +14,7 @@ export const signIn = async (
   appCheckToken: string,
   deviceId: string,
 ) => {
-  const response = await axios.post('https://staging.api.vama.com/signin_sms', {
+  const response = await axios.post(LOGIN_API, {
     phone_number: phoneNumber,
     country_code: countryCode,
     verify_code: verifyCode,

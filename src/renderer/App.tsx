@@ -1,5 +1,12 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux'; //
+import { useEffect } from 'react';
+import {
+  MemoryRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
+import { Provider } from 'react-redux';
+import NProgress from 'nprogress';
 import store from './store';
 
 import './App.scss';
@@ -7,17 +14,27 @@ import './App.scss';
 import ChatHome from './pages/ChatHome';
 import Login from './pages/Login';
 
+function RouteProgress() {
+  const location = useLocation();
+
+  useEffect(() => {
+    NProgress.start();
+    NProgress.done();
+  }, [location]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/chatHome" element={<ChatHome />} />{' '}
+    </Routes>
+  );
+}
+
 export default function App() {
   return (
     <Provider store={store}>
-      {' '}
-      {/* wrap your application with the Provider component */}
       <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/chatHome" element={<ChatHome />} />{' '}
-          {/* change the path to /chatHome */}
-        </Routes>
+        <RouteProgress />
       </Router>
     </Provider>
   );
