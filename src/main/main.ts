@@ -9,11 +9,12 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import createTaskbarMenu from './taskbarMenu';
 
 class AppUpdater {
   constructor() {
@@ -101,13 +102,20 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
+  // Taskbar menu
+  const iconPath = path.join(
+    app.isPackaged ? process.resourcesPath : app.getAppPath(),
+    'assets/icon-tray.png',
+  );
+  const tray = new Tray(iconPath);
+  createTaskbarMenu(tray, mainWindow);
+
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
 
-  // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
 };

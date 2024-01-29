@@ -15,7 +15,7 @@ const Container = styled.div`
   border-bottom: 1px solid var(--colors-background-light-secondary);
   color: #fff;
   width: 100%;
-  padding: 10px 24px;
+  padding: 4px 24px;
   display: flex;
   position: relative;
   cursor: pointer;
@@ -49,7 +49,7 @@ const Details = styled.div`
 
 const Name = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 590;
 `;
 
 const Text = styled.div`
@@ -57,6 +57,7 @@ const Text = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 400;
 `;
 
 const TimeStamp = styled.div`

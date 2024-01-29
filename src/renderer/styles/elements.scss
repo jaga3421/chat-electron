@@ -25,6 +25,11 @@
   display: flex;
   flex-direction: row;
   .side-bar {
+    padding-top: 16px;
+    position: relative;
+    .active {
+      color: var(--colors-text-light-secondary);
+    }
     width: 360px;
     height: 100vh;
     background-color: var(--colors-background-light-secondary);
@@ -33,13 +38,6 @@
     width: calc(100vw - 360px);
     display: flex;
     flex-direction: column;
-  }
-}
-
-.side-bar {
-  position: relative;
-  .active {
-    color: var(--colors-text-light-secondary);
   }
 }
 
