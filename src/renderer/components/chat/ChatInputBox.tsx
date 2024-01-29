@@ -1,6 +1,9 @@
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
+import { useDispatch } from 'react-redux';
+import { chatActions } from '../../slices/chatSlice';
 import sendIcon from '../../assets/send.svg';
 
 const Wrapper = styled.div`
@@ -42,19 +45,50 @@ const Button = styled.button`
   &:hover {
     opacity: 0.9;
   }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 interface ChatInputBoxProps {
   placeholder: string;
 }
 
-const ChatInputBox: React.FC<ChatInputBoxProps> = ({ placeholder }) => (
-  <Wrapper>
-    <InputWrapper>
-      <Input placeholder={placeholder} />
-    </InputWrapper>
-    <Button />
-  </Wrapper>
-);
+const ChatInputBox: React.FC<ChatInputBoxProps> = ({ placeholder }) => {
+  const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+
+  const sendMessage = () => {
+    if (message.trim() !== '') {
+      dispatch(chatActions.sendMessage(message));
+      setMessage('');
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
+  const handleClick = () => {
+    sendMessage();
+  };
+
+  return (
+    <Wrapper>
+      <InputWrapper>
+        <Input
+          placeholder={placeholder}
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+          onKeyUp={handleKeyPress}
+        />
+      </InputWrapper>
+      <Button onClick={handleClick} disabled={!message} />
+    </Wrapper>
+  );
+};
 
 export default ChatInputBox;

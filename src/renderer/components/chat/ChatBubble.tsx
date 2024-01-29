@@ -1,6 +1,9 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import styled from 'styled-components';
+import Linkify from 'react-linkify';
+import formatTimestamp from '../../utils';
 
 const Wrapper = styled.div<{ type: 'sent' | 'received' }>`
   padding: 8px 16px;
@@ -30,7 +33,7 @@ const Timestamp = styled.div`
 
 interface ChatBubbleProps {
   message: string;
-  timestamp: string;
+  timestamp: number;
   type: 'sent' | 'received';
 }
 
@@ -40,8 +43,16 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
   type,
 }) => (
   <Wrapper type={type}>
-    {message}
-    <Timestamp>{timestamp}</Timestamp>
+    <Linkify
+      componentDecorator={(decoratedHref, decoratedText, key) => (
+        <a target="_blank" href={decoratedHref} key={key} rel="noreferrer">
+          {decoratedText}
+        </a>
+      )}
+    >
+      {message}
+    </Linkify>
+    <Timestamp>{formatTimestamp(timestamp)}</Timestamp>
   </Wrapper>
 );
 

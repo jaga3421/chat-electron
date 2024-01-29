@@ -1,6 +1,6 @@
 $border-top-color_1: var(--colors-tint-light-primary);
 $border-left-color_1: var(--colors-tint-light-primary);
-$progress-bar-bg: #007c40;
+$progress-bar-bg: var(--colors-tint-light-primary);
 
 @-webkit-keyframes nprogress-spinner {
   0% {
@@ -28,6 +28,7 @@ $progress-bar-bg: #007c40;
     left: 0;
     width: 100%;
     height: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   }
   .peg {
     display: block;
