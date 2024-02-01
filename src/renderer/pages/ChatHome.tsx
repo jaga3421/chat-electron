@@ -3,17 +3,25 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import ChatSideBar from '../components/chat/ChatSideBar';
 import ChatMainWindow from '../components/chat/ChatMainWindow';
+import WebSocketConnection from '../utils/webSocket';
+import { isTokenValid } from '../slices/authSlice';
 import { RootState } from '../store/rootReducer';
 
 export default function ChatHome() {
-  const navigate = useNavigate();
-  const authState = useSelector((state: RootState) => state.auth);
+  const hasValidToken = useSelector(isTokenValid);
+  const token = useSelector((state: RootState) => state.auth.token);
 
+  const navigate = useNavigate();
+
+  // If the token is not valid, redirect to the login page
   useEffect(() => {
-    if (authState.token === null) {
+    if (!hasValidToken) {
       navigate('/');
+    } else if (token) {
+      WebSocketConnection.connect(token);
     }
-  }, [authState.token, navigate]);
+  }, [hasValidToken, navigate, token]);
+
   return (
     <div className="full-screen two-column">
       <ChatSideBar />

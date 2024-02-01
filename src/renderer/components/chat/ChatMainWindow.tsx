@@ -6,6 +6,7 @@ import { RootState } from '../../store/rootReducer';
 import ChatBubble from './ChatBubble';
 import ChatInputBox from './ChatInputBox';
 import ChatMainHeader from './ChatMainHeader';
+import empty from '../../assets/homeMessage.svg';
 
 interface Props {}
 
@@ -20,6 +21,21 @@ const ChatMainWindow: React.FC<Props> = () => {
   };
 
   useEffect(scrollToBottom, [messages]);
+
+  if (messages.length === 0)
+    return (
+      <div
+        className="chat-content h-100 p-16 flex center-this overflow-auto"
+        style={{ width: 'calc(100% - 360px)' }}
+      >
+        <div className="empty align-center">
+          <img src={empty} alt="empty" style={{ width: '200px' }} />
+          <h3>Start a conversation</h3>
+          <p>Click on a contact to start chatting</p>
+        </div>
+        <div ref={messagesEndRef} />
+      </div>
+    );
 
   return (
     <div className="main-chat-area">

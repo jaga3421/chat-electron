@@ -1,25 +1,33 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/function-component-definition */
 
 import React from 'react';
 import styled from 'styled-components';
+import { getSideBarTimeStamp } from '../../utils';
 
 interface ChatSideSingleProps {
   avatarSrc: string;
   name: string;
   text: string;
   timeStamp: string;
+  isSelected?: boolean;
+  onClick?: () => void;
 }
-
-const Container = styled.div`
-  background: var(--colors-tint-light-primary);
-  border-bottom: 1px solid var(--colors-background-light-secondary);
-  color: #fff;
+const Container = styled.div<{ isSelected?: boolean }>`
+  background: ${(props) =>
+    props.isSelected ? 'var(--colors-tint-light-primary)' : '#e7e2e2'};
+  border-bottom: 1px solid
+    ${(props) =>
+      props.isSelected
+        ? 'var(--colors-background-light-secondary)'
+        : '#c9c9cc'};
+  color: ${(props) => (props.isSelected ? '#fff' : 'initial')};
   width: 100%;
   padding: 4px 24px;
   display: flex;
   position: relative;
   cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   &:hover {
     opacity: 0.9;
   }
@@ -49,7 +57,7 @@ const Details = styled.div`
 
 const Name = styled.div`
   font-size: 16px;
-  font-weight: 590;
+  font-weight: 500;
 `;
 
 const Text = styled.div`
@@ -72,9 +80,11 @@ const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
   name,
   text,
   timeStamp,
+  isSelected = false,
+  onClick,
 }) => {
   return (
-    <Container>
+    <Container isSelected={isSelected} onClick={onClick}>
       <Avatar>
         <img src={avatarSrc} alt="Avatar" />
       </Avatar>
@@ -82,7 +92,7 @@ const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
         <Name>{name}</Name>
         <Text>{text}</Text>
       </Details>
-      <TimeStamp>{timeStamp}</TimeStamp>
+      <TimeStamp>{getSideBarTimeStamp(timeStamp)}</TimeStamp>
     </Container>
   );
 };

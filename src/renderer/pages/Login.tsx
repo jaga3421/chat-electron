@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UnknownAction } from '@reduxjs/toolkit';
-import { signInAsync, setToken } from '../slices/authSlice';
+import { signInAsync, isTokenValid } from '../slices/authSlice';
 import { RootState } from '../store/rootReducer';
 
 import logo from '../assets/signup.svg';
@@ -18,6 +18,8 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authState = useSelector((state: RootState) => state.auth);
+
+  const hasValidToken = useSelector(isTokenValid);
 
   const [phoneNumber, setPhoneNumber] = useState('');
 
@@ -35,15 +37,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      dispatch(setToken(token));
+    if (hasValidToken) {
       navigate('/chatHome');
     }
-    if (authState.status === 'succeeded') {
-      navigate('/chatHome');
-    }
-  }, [authState.status, navigate, dispatch]);
+  }, [authState.status, hasValidToken, navigate]);
 
   return (
     <div className="full-screen flex flex-col center-this relative">

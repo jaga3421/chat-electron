@@ -85,7 +85,8 @@
     "react-linkify": "^1.0.0-alpha",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.16.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@electron/notarize": "^2.1.0",
@@ -103,6 +104,7 @@
     "@types/react-linkify": "^1.0.4",
     "@types/react-test-renderer": "^18.0.1",
     "@types/terser-webpack-plugin": "^5.0.4",
+    "@types/uuid": "^9.0.8",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",

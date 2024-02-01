@@ -4,6 +4,7 @@ import { signIn } from '../api/auth';
 
 interface AuthState {
   token: string | null;
+  tokenExpiresAt: number | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   user: object;
   error: string | null;
@@ -11,11 +12,12 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: null,
   status: 'idle',
   error: null,
   user: {},
   authResponse: null,
+  token: localStorage.getItem('authToken') || null,
+  tokenExpiresAt: Number(localStorage.getItem('tokenExpiresAt')) || null,
 };
 
 export const signInAsync = createAsyncThunk(
@@ -63,8 +65,13 @@ export const authSlice = createSlice({
         state.token = action.payload.data.token;
         state.authResponse = action.payload.data;
         state.user = action.payload.data.account;
+        state.tokenExpiresAt = Number(action.payload.data.token_expires_at);
         if (action.payload.data.token) {
           localStorage.setItem('authToken', action.payload.data.token);
+          localStorage.setItem(
+            'tokenExpiresAt',
+            action.payload.data.token_expires_at,
+          );
         }
       })
       .addCase(signInAsync.rejected, (state, action) => {
@@ -73,6 +80,15 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const isTokenValid = (state: { auth: AuthState }) => {
+  if (state.auth.token && state.auth.tokenExpiresAt) {
+    const now = new Date();
+    const tokenExpiresAt = new Date(state.auth.tokenExpiresAt);
+    return now >= tokenExpiresAt;
+  }
+  return false;
+};
 
 export const { setToken } = authSlice.actions;
 

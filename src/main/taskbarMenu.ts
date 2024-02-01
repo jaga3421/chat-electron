@@ -12,18 +12,6 @@ export default function createTaskbarMenu(
       },
     },
     {
-      label: 'Settings',
-      click: () => {
-        //  open settings
-      },
-    },
-    {
-      label: 'Check for Updates',
-      click: () => {
-        //  check for updates
-      },
-    },
-    {
       label: 'Show notifications',
       type: 'checkbox',
       click: () => {
@@ -43,8 +31,23 @@ export default function createTaskbarMenu(
       },
     },
     {
-      label: 'Show Developer Tools',
-      type: 'checkbox',
+      type: 'separator',
+    },
+    {
+      label: 'Settings',
+      click: () => {
+        //  open settings
+      },
+    },
+    {
+      label: 'Check for Updates',
+      click: () => {
+        //  check for updates
+      },
+    },
+
+    {
+      label: 'Toggle Dev Tools',
       click: () => {
         // Toggle the DevTools of the main window
         if (mainWindow && !mainWindow.isDestroyed()) {
@@ -53,15 +56,12 @@ export default function createTaskbarMenu(
       },
     },
     {
+      type: 'separator',
+    },
+    {
       label: 'About',
       click: () => {
         //  show about information
-      },
-    },
-    {
-      label: 'Logout',
-      click: () => {
-        //  logout
       },
     },
     {
