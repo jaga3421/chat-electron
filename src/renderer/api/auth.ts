@@ -1,8 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
 
-require('dotenv').config();
-
 const LOGIN_API = process.env.REACT_APP_LOGIN_URL;
 
 if (!LOGIN_API) {
