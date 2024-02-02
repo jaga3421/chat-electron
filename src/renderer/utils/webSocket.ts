@@ -4,6 +4,8 @@ import { channelActions } from '../slices/channelSlice';
 import { chatActions } from '../slices/chatSlice';
 import store from '../store';
 
+require('dotenv').config();
+
 const WS_API = process.env.REACT_APP_WS_URL;
 const HC_FCM = uuidv4();
 const HC_DEVICE_ID = '12345';
