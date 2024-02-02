@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { formatTimestampFromISOString } from '../../utils';
 
 const Wrapper = styled.div`
   padding: 16px 24px;
@@ -46,7 +47,11 @@ function ChatMainHeader({
       <Avatar src={avatarSrc} />
       <Details>
         <Name>{name}</Name>
-        <LastSeen>{lastSeen}</LastSeen>
+        <LastSeen>
+          {lastSeen === 'online'
+            ? 'Online'
+            : `Last seen ${formatTimestampFromISOString(lastSeen)}`}
+        </LastSeen>
       </Details>
     </Wrapper>
   );

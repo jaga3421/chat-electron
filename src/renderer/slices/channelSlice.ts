@@ -22,7 +22,7 @@ type Channel = {
   id: string;
   last_message: Message;
   metadata: any;
-  isSelected: boolean;
+  isselected: boolean;
 };
 
 interface ChannelState {
@@ -53,13 +53,14 @@ const channelSlice = createSlice({
     selectChannel: (state, action: PayloadAction<string>) => {
       state.channels = state.channels.map((channel) => {
         if (channel.id === action.payload) {
-          return { ...channel, isSelected: true };
+          return { ...channel, isselected: true };
         }
-        return { ...channel, isSelected: false };
+        return { ...channel, isselected: false };
       });
     },
   },
 });
+export const selectChannels = (state: ChannelState) => state.channels;
 
 export const { actions: channelActions, reducer: channelReducer } =
   channelSlice;

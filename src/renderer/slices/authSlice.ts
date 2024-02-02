@@ -84,8 +84,8 @@ export const authSlice = createSlice({
 export const isTokenValid = (state: { auth: AuthState }) => {
   if (state.auth.token && state.auth.tokenExpiresAt) {
     const now = new Date();
-    const tokenExpiresAt = new Date(state.auth.tokenExpiresAt);
-    return now >= tokenExpiresAt;
+    const tokenExpiresAt = new Date(state.auth.tokenExpiresAt * 1000);
+    return now <= tokenExpiresAt;
   }
   return false;
 };

@@ -1,5 +1,5 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/function-component-definition */
-// ChatMainWindow.tsx
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/rootReducer';
@@ -10,8 +10,27 @@ import empty from '../../assets/homeMessage.svg';
 
 interface Props {}
 
-const ChatMainWindow: React.FC<Props> = () => {
-  const messages = useSelector((state: RootState) => state.chat.messages);
+// To show the SVG image, when no active channels are selected
+const EmptyState: React.FC = () => (
+  <div
+    className="chat-content h-100 p-16 flex center-this overflow-auto"
+    style={{ width: 'calc(100% - 360px)' }}
+  >
+    <div className="empty align-center">
+      <img src={empty} alt="empty" style={{ width: '200px' }} />
+      <h3>Start a conversation</h3>
+      <p>Click on a contact to start chatting</p>
+    </div>
+  </div>
+);
+
+/* The main chat window with the header, messages and input box
+  populated from the active channel
+*/
+const ChatContent: React.FC<{ messages: any[]; activeChannel: any }> = ({
+  messages,
+  activeChannel,
+}) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -22,31 +41,17 @@ const ChatMainWindow: React.FC<Props> = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  if (messages.length === 0)
-    return (
-      <div
-        className="chat-content h-100 p-16 flex center-this overflow-auto"
-        style={{ width: 'calc(100% - 360px)' }}
-      >
-        <div className="empty align-center">
-          <img src={empty} alt="empty" style={{ width: '200px' }} />
-          <h3>Start a conversation</h3>
-          <p>Click on a contact to start chatting</p>
-        </div>
-        <div ref={messagesEndRef} />
-      </div>
-    );
+  const { avatar, first_name, last_name } =
+    activeChannel.metadata.direct.other_account;
+  const { online, last_seen } = activeChannel.metadata.direct.online_status;
 
   return (
     <div className="main-chat-area">
-      {/* Chat header */}
       <ChatMainHeader
-        avatarSrc="https://storage.googleapis.com/profile-avatars-vama-staging/338d7ad5-850b-4c30-8267-405882c8e6c6-low-res.png"
-        name="John Doe"
-        lastSeen="Last seen 5 minutes ago"
+        avatarSrc={avatar}
+        name={`${first_name} ${last_name}`}
+        lastSeen={online ? 'online' : last_seen}
       />
-
-      {/* Main Chats */}
       <div className="chat-content h-100 p-16 flex flex-col overflow-auto">
         {messages.map((message) => (
           <ChatBubble
@@ -58,10 +63,22 @@ const ChatMainWindow: React.FC<Props> = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-
-      {/* Chat input box */}
-      <ChatInputBox placeholder="Message" />
+      <ChatInputBox placeholder="Message" channelID={activeChannel.id} />
     </div>
+  );
+};
+
+// The main chat window component
+const ChatMainWindow: React.FC<Props> = () => {
+  const messages = useSelector((state: RootState) => state.chat.messages);
+  const channels = useSelector((state: RootState) => state.channels.channels);
+
+  const activeChannel = channels.find((channel) => channel.isselected);
+
+  return activeChannel ? (
+    <ChatContent messages={messages} activeChannel={activeChannel} />
+  ) : (
+    <EmptyState />
   );
 };
 

@@ -18,7 +18,7 @@ export default function ChatHome() {
     if (!hasValidToken) {
       navigate('/');
     } else if (token) {
-      WebSocketConnection.connect(token);
+      WebSocketConnection.connect();
     }
   }, [hasValidToken, navigate, token]);
 

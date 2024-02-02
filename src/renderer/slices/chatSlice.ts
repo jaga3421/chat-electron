@@ -20,13 +20,29 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    sendMessage: (state, action: PayloadAction<string>) => {
-      state.messages.push({
-        id: Math.random().toString(),
-        text: action.payload,
-        timestamp: Date.now(),
-        type: 'sent',
-      });
+    sendMessage: (state, action: PayloadAction<Message>) => {
+      /* Check if message ID exists in state
+          If yes, it is a sent message, and we update status & Read receipt
+      */
+      const { id, text } = action.payload;
+      const existingMessageIndex = state.messages.findIndex(
+        (message) => message.id === id,
+      );
+      if (existingMessageIndex !== -1) {
+        state.messages[existingMessageIndex] = {
+          ...state.messages[existingMessageIndex],
+          text,
+          timestamp: Date.now(),
+          type: 'sent',
+        };
+      } else {
+        state.messages.push({
+          id,
+          text,
+          timestamp: Date.now(),
+          type: 'sent',
+        });
+      }
     },
   },
 });

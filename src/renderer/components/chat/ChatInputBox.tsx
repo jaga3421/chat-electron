@@ -1,10 +1,8 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
-import { useDispatch } from 'react-redux';
-import { chatActions } from '../../slices/chatSlice';
 import sendIcon from '../../assets/send.svg';
+import webSocket from '../../utils/webSocket';
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,15 +51,18 @@ const Button = styled.button`
 
 interface ChatInputBoxProps {
   placeholder: string;
+  channelID: string;
 }
 
-const ChatInputBox: React.FC<ChatInputBoxProps> = ({ placeholder }) => {
-  const dispatch = useDispatch();
+const ChatInputBox: React.FC<ChatInputBoxProps> = ({
+  placeholder,
+  channelID,
+}) => {
   const [message, setMessage] = useState('');
 
   const sendMessage = () => {
     if (message.trim() !== '') {
-      dispatch(chatActions.sendMessage(message));
+      webSocket.sendMessage(channelID, message);
       setMessage('');
     }
   };

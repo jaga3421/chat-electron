@@ -10,18 +10,18 @@ interface ChatSideSingleProps {
   name: string;
   text: string;
   timeStamp: string;
-  isSelected?: boolean;
+  isselected?: boolean;
   onClick?: () => void;
 }
-const Container = styled.div<{ isSelected?: boolean }>`
+const Container = styled.div<{ isselected?: boolean }>`
   background: ${(props) =>
-    props.isSelected ? 'var(--colors-tint-light-primary)' : '#e7e2e2'};
+    props.isselected ? 'var(--colors-tint-light-primary)' : '#e7e2e2'};
   border-bottom: 1px solid
     ${(props) =>
-      props.isSelected
+      props.isselected
         ? 'var(--colors-background-light-secondary)'
         : '#c9c9cc'};
-  color: ${(props) => (props.isSelected ? '#fff' : 'initial')};
+  color: ${(props) => (props.isselected ? '#fff' : 'initial')};
   width: 100%;
   padding: 4px 24px;
   display: flex;
@@ -80,11 +80,11 @@ const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
   name,
   text,
   timeStamp,
-  isSelected = false,
+  isselected = false,
   onClick,
 }) => {
   return (
-    <Container isSelected={isSelected} onClick={onClick}>
+    <Container isselected={isselected} onClick={onClick}>
       <Avatar>
         <img src={avatarSrc} alt="Avatar" />
       </Avatar>
