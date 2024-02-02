@@ -54,17 +54,15 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'Vama',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About Vama',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
-        { label: 'Services', submenu: [] },
-        { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide Vama',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -155,29 +153,54 @@ export default class MenuBuilder {
       label: 'Help',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'Visit Vama',
           click() {
-            shell.openExternal('https://electronjs.org');
+            shell.openExternal('https://www.vama.com/');
           },
         },
         {
-          label: 'Documentation',
+          label: 'FAQs',
           click() {
-            shell.openExternal(
-              'https://github.com/electron/electron/tree/main/docs#readme',
-            );
+            shell.openExternal('https://www.vama.com/faqs');
           },
         },
         {
-          label: 'Community Discussions',
+          label: 'Terms and Conditions',
           click() {
-            shell.openExternal('https://www.electronjs.org/community');
+            shell.openExternal('https://www.vama.com/terms');
           },
         },
         {
-          label: 'Search Issues',
+          type: 'separator',
+        },
+        {
+          label: 'Downloads',
+          submenu: [
+            {
+              label: 'Android',
+              click() {
+                shell.openExternal(
+                  'https://play.google.com/store/apps/details?id=com.vama.app.prod',
+                );
+              },
+            },
+            {
+              label: 'iOS',
+              click() {
+                shell.openExternal(
+                  'https://apps.apple.com/us/app/vama/id1600580466',
+                );
+              },
+            },
+          ],
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Invest in Vama',
           click() {
-            shell.openExternal('https://github.com/electron/electron/issues');
+            shell.openExternal('https://invest-in-vama.webflow.io/');
           },
         },
       ],

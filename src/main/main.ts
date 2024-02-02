@@ -12,6 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -26,7 +27,16 @@ class AppUpdater {
   }
 }
 
+const store = new Store();
 let mainWindow: BrowserWindow | null = null;
+
+// Get previously set dimensions and position of the window
+const windowState = {
+  width: store.get('windowState.width', 800),
+  height: store.get('windowState.height', 600),
+  x: store.get('windowState.x'),
+  y: store.get('windowState.y'),
+};
 
 setupIpcHandlers();
 
@@ -70,9 +80,12 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
     icon: getAssetPath('icon.png'),
+    x: windowState.x as number,
+    y: windowState.y as number,
+    width: windowState.width as number,
+    height: windowState.height as number,
+    minWidth: 600,
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -81,6 +94,10 @@ const createWindow = async () => {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+
+  /**
+   * Main winow Event listeners
+   * */
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -97,6 +114,26 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
+  // Open urls in the user's browser
+  mainWindow.webContents.setWindowOpenHandler((edata) => {
+    shell.openExternal(edata.url);
+    return { action: 'deny' };
+  });
+
+  mainWindow.on('resize', () => {
+    if (!mainWindow) return;
+    const [width, height] = mainWindow.getSize();
+    store.set('windowState.width', width);
+    store.set('windowState.height', height);
+  });
+
+  mainWindow.on('move', () => {
+    if (!mainWindow) return;
+    const [x, y] = mainWindow.getPosition();
+    store.set('windowState.x', x);
+    store.set('windowState.y', y);
+  });
+
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
@@ -107,12 +144,6 @@ const createWindow = async () => {
   );
   const tray = new Tray(iconPath);
   createTaskbarMenu(tray, mainWindow);
-
-  // Open urls in the user's browser
-  mainWindow.webContents.setWindowOpenHandler((edata) => {
-    shell.openExternal(edata.url);
-    return { action: 'deny' };
-  });
 
   // eslint-disable-next-line
   new AppUpdater();

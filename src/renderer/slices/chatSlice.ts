@@ -13,7 +13,9 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  messages: [],
+  messages: localStorage.getItem('localMessages')
+    ? JSON.parse(localStorage.getItem('localMessages')!)
+    : [],
 };
 
 const chatSlice = createSlice({
@@ -43,6 +45,7 @@ const chatSlice = createSlice({
           type: 'sent',
         });
       }
+      localStorage.setItem('localMessages', JSON.stringify(state.messages));
     },
   },
 });
