@@ -31,19 +31,21 @@ The main process is responsible for creating windows in Electron and handling sy
 
 - `src/main/tray.ts`: This file is responsible for creating and managing the system tray icon and its associated context menu. It provides functionality such as showing, hiding, and updating the tray icon and context menu.
 
-- `src/main/menu.ts`: This file defines the application menu structure. It includes the definitions for all the menu items in the application, their click handlers, and any dynamic behavior they might have (like being enabled or disabled based on application state).
+- `src/main/menu.ts`: This file defines the application menu structure. It includes the definitions for all the menu items in the application, their click handlers, and any dynamic behaviors
 
 ## Renderer Process (React)
 
-The renderer process is responsible for running the user interface of your application. It is a web page that uses HTML, CSS, and JavaScript.
+The renderer process is the actual Vama app. This is not a web app but rather a react application packaged inside Electron
 
-- `src/renderer/`: This directory contains all the source code for the React application that runs in the renderer process. It includes React components, hooks, and utilities.
+- `src/renderer/`: This directory contains all the source code for the React application that runs in the renderer process. It includes components, hooks, and utilities.
 
-- `src/slices/`: This directory contains Redux slices for state management in the React application.
+- `src/slices/`: This directory contains Redux slices for state management in the React application. There are 3 states used across the app. Auth, Chats and Channels. These provide a single source of truth and help maintaining the code and scaling them
 
-- `src/renderer/components/`: This directory contains reusable React components that are used in multiple places throughout the application. These components are typically smaller and more focused, such as buttons, input fields, or individual items in a list.
+- `src/renderer/components/`: This directory contains reusable React components that are used in multiple places throughout the application. These components are smaller and more focused, such as buttons, input fields, and items such as Chat headers, chat bubbles, loaders etc
 
-- `src/renderer/pages/`: This directory contains the main page components. Each file corresponds to a different page or route in the application. These components are typically larger and composed of many smaller components from the `src/renderer/components/` directory.
+- `src/renderer/pages/`: This directory contains the main page components. Right now there are only 2 routes, hence two pages. These components are composed of components from the `src/renderer/components/` directory.
+
+- `src/renderer/utils/`: This directory contains utility functions and constants that are used across the React application. Some important methods to parse time, call websockets are here
 
 ## Shared
 
