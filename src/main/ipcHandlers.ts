@@ -7,6 +7,7 @@ import notify from './notify';
 const store = new Store();
 
 function showBadge(count: number) {
+  if (typeof count !== 'number') return;
   if (process.platform === 'darwin') {
     if (count <= 0) {
       app.dock.setBadge('');

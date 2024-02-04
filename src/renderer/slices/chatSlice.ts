@@ -6,18 +6,17 @@ interface Message {
   text: string;
   timestamp: number;
   type: 'sent' | 'received';
+  unread?: boolean;
 }
 
 interface ChatState {
   messages: Message[];
-  unreadMessages?: number;
 }
 
 const initialState: ChatState = {
   messages: localStorage.getItem('localMessages')
     ? JSON.parse(localStorage.getItem('localMessages')!)
     : [],
-  unreadMessages: Number(localStorage.getItem('unreadMessages')) || 0,
 };
 
 const chatSlice = createSlice({
@@ -49,7 +48,25 @@ const chatSlice = createSlice({
       }
       localStorage.setItem('localMessages', JSON.stringify(state.messages));
     },
+
+    getMessage: (state, action: PayloadAction<Message>) => {
+      const { id, text } = action.payload;
+      state.messages.push({
+        id,
+        text,
+        timestamp: Date.now(),
+        type: 'received',
+        unread: !document.hasFocus(),
+      });
+
+      window.electron?.ipcRenderer.sendMessage(
+        'show-notification',
+        text,
+        document.hasFocus() ? 0 : 1,
+      );
+      localStorage.setItem('localMessages', JSON.stringify(state.messages));
+    },
   },
 });
-
+export const { getMessage } = chatSlice.actions;
 export const { actions: chatActions, reducer: chatReducer } = chatSlice;

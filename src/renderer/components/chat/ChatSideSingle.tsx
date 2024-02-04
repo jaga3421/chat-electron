@@ -12,6 +12,7 @@ interface ChatSideSingleProps {
   timeStamp: string;
   isselected?: boolean;
   onClick?: () => void;
+  unread?: number;
 }
 const Container = styled.div<{ isselected?: boolean }>`
   background: ${(props) =>
@@ -75,6 +76,23 @@ const TimeStamp = styled.div`
   right: 10px;
 `;
 
+// styled component to show unread count
+const UnreadCount = styled.div`
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  background: #22266b;
+  color: var(--colors-background-light-primary);
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 12px;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
   avatarSrc,
   name,
@@ -82,6 +100,7 @@ const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
   timeStamp,
   isselected = false,
   onClick,
+  unread,
 }) => {
   return (
     <Container isselected={isselected} onClick={onClick}>
@@ -93,6 +112,10 @@ const ChatSideSingle: React.FC<ChatSideSingleProps> = ({
         <Text>{text}</Text>
       </Details>
       <TimeStamp>{getSideBarTimeStamp(timeStamp)}</TimeStamp>
+      {
+        // show unread count only if unread is greater than 0
+        unread && unread > 0 && <UnreadCount>{unread}</UnreadCount>
+      }
     </Container>
   );
 };

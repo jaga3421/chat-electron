@@ -34,7 +34,7 @@ const ChatContent: React.FC<{ messages: any[]; activeChannel: any }> = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
-    if (messages.length > 0 && messages[messages.length - 1].type === 'sent') {
+    if (messages.length > 0) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   };

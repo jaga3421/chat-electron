@@ -1,6 +1,9 @@
 /* eslint-disable react/function-component-definition */
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { randomMessage } from '../../utils/randomMessage';
+import { getMessage } from '../../slices/chatSlice';
 import sendIcon from '../../assets/send.svg';
 import webSocket from '../../utils/webSocket';
 
@@ -59,12 +62,19 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({
   channelID,
 }) => {
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
 
   const sendMessage = () => {
     if (message.trim() !== '') {
       webSocket.sendMessage(channelID, message);
       setMessage('');
     }
+
+    // Mock simulation of a response from the server
+    if (!navigator.onLine) return;
+    setTimeout(() => {
+      dispatch(getMessage(randomMessage() as any));
+    }, 4000);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
