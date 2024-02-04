@@ -8,7 +8,7 @@ import store from '../../store';
 import { channelActions } from '../../slices/channelSlice';
 import WebSocketConnection from '../../utils/webSocket';
 import NetworkStatus from '../NetworkStatus';
-import SideBarPH from '../placeholders/SidebarPH';
+import SideBarPH from '../placeholders/SideBarPH';
 
 type Props = {};
 
