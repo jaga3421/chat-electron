@@ -10,12 +10,14 @@ interface Message {
 
 interface ChatState {
   messages: Message[];
+  unreadMessages?: number;
 }
 
 const initialState: ChatState = {
   messages: localStorage.getItem('localMessages')
     ? JSON.parse(localStorage.getItem('localMessages')!)
     : [],
+  unreadMessages: Number(localStorage.getItem('unreadMessages')) || 0,
 };
 
 const chatSlice = createSlice({

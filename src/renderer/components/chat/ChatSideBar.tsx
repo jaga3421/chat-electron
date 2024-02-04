@@ -8,6 +8,7 @@ import store from '../../store';
 import { channelActions } from '../../slices/channelSlice';
 import WebSocketConnection from '../../utils/webSocket';
 import NetworkStatus from '../NetworkStatus';
+import SideBarPH from '../placeholders/SidebarPH';
 
 type Props = {};
 
@@ -22,7 +23,7 @@ export default function ChatSideBar({}: Props) {
   return (
     <div className="side-bar">
       {channels.length === 0 ? (
-        <div className="empty">Loading your chats</div>
+        <SideBarPH />
       ) : (
         channels.map((channel) => (
           <ChatSideSingle

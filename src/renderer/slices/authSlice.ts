@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
+import { toast } from 'react-toastify';
 import { signIn } from '../api/auth';
 
 interface AuthState {
@@ -58,6 +59,7 @@ export const authSlice = createSlice({
       state.user = {};
       state.authResponse = null;
       localStorage.clear();
+      toast.success('Signed out Successfully');
     },
   },
   extraReducers: (builder) => {

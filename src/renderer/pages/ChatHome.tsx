@@ -6,6 +6,7 @@ import ChatMainWindow from '../components/chat/ChatMainWindow';
 import WebSocketConnection from '../utils/webSocket';
 import { isTokenValid } from '../slices/authSlice';
 import { RootState } from '../store/rootReducer';
+import LogOut from '../components/LogOut';
 
 export default function ChatHome() {
   const hasValidToken = useSelector(isTokenValid);
@@ -24,6 +25,7 @@ export default function ChatHome() {
 
   return (
     <div className="full-screen two-column">
+      <LogOut />
       <ChatSideBar />
       <ChatMainWindow />
     </div>
