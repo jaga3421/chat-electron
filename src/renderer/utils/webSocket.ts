@@ -37,7 +37,6 @@ class WebSocketConnection {
     );
 
     this.ws.onopen = () => {
-      this.ws?.close();
       console.log('WebSocket is connected');
       this.getDefaultChannels();
     };

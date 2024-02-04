@@ -52,6 +52,13 @@ export const authSlice = createSlice({
       state.token = action.payload;
       state.status = 'succeeded';
     },
+    clearToken: (state) => {
+      state.token = null;
+      state.tokenExpiresAt = null;
+      state.user = {};
+      state.authResponse = null;
+      localStorage.clear();
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,6 +97,6 @@ export const isTokenValid = (state: { auth: AuthState }) => {
   return false;
 };
 
-export const { setToken } = authSlice.actions;
+export const { setToken, clearToken } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -16,7 +16,7 @@ import Store from 'electron-store';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import createTaskbarMenu from './taskbarMenu';
+import createTray from './tray';
 import { setupIpcHandlers } from './ipcHandlers';
 
 class AppUpdater {
@@ -37,8 +37,6 @@ const windowState = {
   x: store.get('windowState.x'),
   y: store.get('windowState.y'),
 };
-
-setupIpcHandlers();
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -133,6 +131,9 @@ const createWindow = async () => {
     store.set('windowState.x', x);
     store.set('windowState.y', y);
   });
+  /**
+   * Include independant modules
+   */
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
@@ -143,7 +144,8 @@ const createWindow = async () => {
     'assets/icon-tray.png',
   );
   const tray = new Tray(iconPath);
-  createTaskbarMenu(tray, mainWindow);
+  createTray(tray, mainWindow);
+  setupIpcHandlers(mainWindow);
 
   // eslint-disable-next-line
   new AppUpdater();
@@ -165,6 +167,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

@@ -22,9 +22,10 @@ const StatusDiv = styled.div<StatusDivProps>`
 `;
 
 const NetworkStatus: React.FC = () => {
-  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
-  const [isVisible, setIsVisible] = useState(false);
-  const [wasOffline, setWasOffline] = useState(false);
+  const initialOnlineStatus = window.navigator.onLine;
+  const [isOnline, setIsOnline] = useState(initialOnlineStatus);
+  const [isVisible, setIsVisible] = useState(!initialOnlineStatus);
+  const [wasOffline, setWasOffline] = useState(!initialOnlineStatus);
 
   const onOnline = () => {
     if (wasOffline) {

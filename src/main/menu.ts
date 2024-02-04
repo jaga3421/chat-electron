@@ -4,7 +4,12 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
+  Notification,
 } from 'electron';
+import path from 'path';
+
+import fs from 'fs';
+import notify from './notify';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -122,6 +127,32 @@ export default class MenuBuilder {
             this.mainWindow.webContents.toggleDevTools();
           },
         },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Open Logs',
+          click() {
+            shell.openPath(app.getPath('logs'));
+          },
+        },
+        {
+          label: 'Clear Logs',
+          click() {
+            const logPath = path.join(app.getPath('logs'), 'main.log');
+            fs.writeFile(logPath, '', (err: any) => {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              // create notification that logs are cleared
+              notify(
+                'Logs Cleared',
+                'The log file has been successfully cleared.',
+              );
+            });
+          },
+        },
       ],
     };
     const subMenuViewProd: MenuItemConstructorOptions = {
@@ -132,6 +163,37 @@ export default class MenuBuilder {
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+          },
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Open Logs',
+          click() {
+            shell.openPath(app.getPath('logs'));
+          },
+        },
+        {
+          label: 'Clear Logs',
+          click() {
+            const logPath = path.join(app.getPath('logs'), 'main.log');
+            fs.writeFile(logPath, '', (err: any) => {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              // create notification that logs are cleared
+              try {
+                new Notification({
+                  title: 'Logs Cleared',
+                  body: 'The log file has been successfully cleared.',
+                  // icon: path.join(__dirname, 'assets/icon.png'),
+                }).show();
+              } catch (error) {
+                console.error('Failed to show notification:', error);
+              }
+            });
           },
         },
       ],
